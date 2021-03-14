@@ -6,3 +6,5 @@ create user cmddbuser with encrypted password 'pa55w0rd!' createdb;
 
 dotnet ef migrations add AddCommandsToDB
 dotnet ef database update
+
+dotnet user-secrets set “UserID” “cmddbuser”
