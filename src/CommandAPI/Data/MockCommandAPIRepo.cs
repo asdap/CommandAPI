@@ -5,6 +5,16 @@ namespace CommandAPI.Data
 {
     public class MockCommandAPIRepo : ICommandAPIRepo
     {
+        public void CreateCommand(Command cmd)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteCommand(Command cmd)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<Command> GetAllCommands(){
         var commands = new List<Command>
         {
@@ -28,6 +38,16 @@ namespace CommandAPI.Data
             Id=0, HowTo="How to generate a migration",
             CommandLine="dotnet ef migrations add <Name of Migration>",
             Platform=".Net Core EF"};
+        }
+
+        public bool SaveChanges()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UpdateCommand(Command cmd)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
