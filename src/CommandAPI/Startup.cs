@@ -1,12 +1,13 @@
+using AutoMapper;
 using CommandAPI.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using Npgsql;
-using AutoMapper;
 
 namespace CommandAPI
 {
@@ -24,13 +25,21 @@ namespace CommandAPI
             var builder = new NpgsqlConnectionStringBuilder();
             builder.ConnectionString =
                 Configuration.GetConnectionString("PostgreSqlConnection");
-                builder.Username = Configuration["UserID"];
-                builder.Password = Configuration["Password"];
+            builder.Username = Configuration["UserID"];
+            builder.Password = Configuration["Password"];
 
-            services.AddDbContext<CommandContext>(opt =>opt.UseNpgsql(builder.ConnectionString));
+            services
+                .AddDbContext<CommandContext>(opt =>
+                    opt.UseNpgsql(builder.ConnectionString));
 
-            services.AddControllers();
-            services.AddAutoMapper(typeof(Startup).Assembly);
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(s =>
+                {
+                    s.SerializerSettings.ContractResolver =
+                        new CamelCasePropertyNamesContractResolver();
+                });
+            services.AddAutoMapper(typeof (Startup).Assembly);
             services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
         }
 
